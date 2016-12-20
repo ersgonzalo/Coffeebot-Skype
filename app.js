@@ -51,7 +51,13 @@ bot.on('deleteUserData', (message)=>{
     // User asked to delete their data
 });
 
+//=========================================================
+// Bots Dialogs Actions
+//=========================================================
+
 bot.beginDialogAction('help', '/help', { matches: /^help/i });
+bot.beginDialogAction('menu', '/menu', { matches: /^menu/i });
+
 //=========================================================
 // Bots Dialogs
 //=========================================================
@@ -60,12 +66,19 @@ String.prototype.contains = function(content){
   return this.indexOf(content) !== -1;
 }
 
+function displayMenuText(session){
+   session.endDialog("Global commands that are available anytime:\n\n* menu - Exits a demo and returns to the menu.\n* goodbye - End this conversation.\n* help - Displays these commands.");
+}
+
 bot.dialog('/help', [
-    function (session) {
-        session.endDialog("Global commands that are available anytime:\n\n* menu - Exits a demo and returns to the menu.\n* goodbye - End this conversation.\n* help - Displays these commands.");
-    }
+    (session)=>{displayMenuText(session);}
 ]);
 
+bot.dialog('/menu', [
+    (session)=>{displayMenuText(session);}
+]);
+
+//Rest of the command logic
 bot.dialog('/', function (session) {
   
     if(textLookup('greeting') || textLookup('hi'))
@@ -93,7 +106,7 @@ bot.dialog('/', function (session) {
 
     function checkTime(){
 
-      let currentMoment = moment().format('hh:mm');
+      let currentMoment = moment().format('HH:mm');
       const brewReadyTime = '10:30';
       const brewOverTime = '11:00';
       const reminderTime = '16:00';
