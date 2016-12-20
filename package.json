@@ -1,0 +1,15 @@
+{
+  "name": "coffeebot",
+  "version": "1.0.0",
+  "description": "A Skype Coffee-bot that will assist the cold brew crew at Indiepay",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Gonzalo",
+  "license": "ISC",
+  "dependencies": {
+    "botbuilder": "^3.4.4",
+    "restify": "^4.3.0"
+  }
+}
