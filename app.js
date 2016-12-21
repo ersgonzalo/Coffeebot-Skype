@@ -8,6 +8,7 @@ const moment = require('moment');
 const settings = require('./settings.js');
 const textContent = require('./textContent.js').BOT_PHRASES;
 const randomFact = require('./textContent.js').randomCoffeeFact;
+const utils = require('./utils.js');
 
 //=========================================================
 // Bot Setup
@@ -67,7 +68,7 @@ String.prototype.contains = function(content){
 }
 
 function displayMenuText(session){
-   session.endDialog("Global commands that are available anytime:\n\n* menu - Exits a demo and returns to the menu.\n* goodbye - End this conversation.\n* help - Displays these commands.");
+   session.endDialog(textContent.menuPhrase);
 }
 
 bot.dialog('/help', [
@@ -81,48 +82,54 @@ bot.dialog('/menu', [
 //Rest of the command logic
 bot.dialog('/', function (session) {
   
-    if(textLookup('greeting') || textLookup('hi'))
-      session.send(textContent.greeting);
+    if(textLookup('greeting') || textLookup('hi') || textLookup('hello'))
+      session.send(utils.randomPhraser(textContent.greeting));
     else if(textLookup('coffee me'))
       session.send(textContent.coffeeMeStart);
     else if(textLookup('random') && textLookup('fact'))
-      session.send(randomFactizer());
+      session.send(utils.randomPhraser(randomFact));
+    else if (textLookup('how') && textLookup('long'))
+      session.send(calculateTimeToCoffee());
+    else if (textLookup('change') && textLookup('times'))
+      session.send(modifySetTimes());
     else
-      session.send(textContent.confused);
+      session.send(utils.randomPhraser(textContent.confused));
 
     //Extrapolated the text lookup because we have lots of keywords
     function textLookup(text){
       return session.message.text.toLowerCase().contains(text);
     };
 
-    function randomFactizer(){
-      let randomIndex = parseInt(Math.random() * randomFact.length - 1);
-      return randomFact[randomIndex];
+    //Uses moment to let user know how far away they are from the cold brew moments.
+    function calculateTimeToCoffee(){
+      // let timeCalculated = moment().toNow();
+      session.send('Still under work!');
     }
 
+    //Changes the settings reminder, brew, and remove times for coffee
+    function modifySetTimes(){
+      
+      session.send('Still under work!');
+    }
+    
     //Does a 30 second check to make sure that we get the time.
     const timeIntervalCheck = 30 * 1000;
     setInterval(()=>{checkTime()},timeIntervalCheck);
 
     function checkTime(){
-
       let currentMoment = moment().format('HH:mm');
-      const brewReadyTime = '10:30';
-      const brewOverTime = '11:00';
-      const reminderTime = '16:00';
-      const makeTime = '16:30';
 
       switch (currentMoment){
-        case brewReadyTime:
+        case settings.brewReadyTime:
           session.send(textContent.brewReadyPhrase);
           break;
-        case brewOverTime:
+        case settings.brewOverTime:
           session.send(textContent.brewOverPhrase);
           break;
-        case reminderTime:
+        case settings.reminderTime:
           session.send(textContent.makeCoffeePhrase);
           break;
-        case makeTime:
+        case settings.makeTime:
           session.send(textContent.reminderPhrase);
           break;
       }

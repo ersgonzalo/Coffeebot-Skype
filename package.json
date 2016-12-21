@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "botbuilder": "^3.4.4",
+    "giphy": "0.0.4",
     "moment": "^2.17.1",
     "restify": "^4.3.0"
   }
