@@ -85,13 +85,16 @@ bot.dialog('/', function (session) {
     if(textLookup('greeting') || textLookup('hi') || textLookup('hello'))
       session.send(utils.randomPhraser(textContent.greeting));
     else if(textLookup('coffee me'))
-      session.send(textContent.coffeeMeStart);
+      session.send(textContent.inProgress);
+      // coffeedMe();
     else if(textLookup('random') && textLookup('fact'))
       session.send(utils.randomPhraser(randomFact));
     else if (textLookup('how') && textLookup('long'))
       session.send(calculateTimeToCoffee());
     else if (textLookup('change') && textLookup('times'))
       session.send(modifySetTimes());
+    else if(textLookup('timings'))
+      displayTimings();
     else
       session.send(utils.randomPhraser(textContent.confused));
 
@@ -103,15 +106,33 @@ bot.dialog('/', function (session) {
     //Uses moment to let user know how far away they are from the cold brew moments.
     function calculateTimeToCoffee(){
       // let timeCalculated = moment().toNow();
-      session.send('Still under work!');
+      session.send(textContent.inProgress);
     }
+
+    function coffeedMe(){
+      let giphyer = require('./giphyer.js');
+      giphyer();
+    }
+
+    function displayTimings(){
+      let simpleReady = utils.momentFormatter(settings.brewReadyTime);
+      let simpleOver = utils.momentFormatter(settings.brewOverTime);
+      let simpleReminder = utils.momentFormatter(settings.reminderTime);
+      let simpleMake = utils.momentFormatter(settings.makeTime);
+
+      let currentTimeValues = `
+      Your reminders are at ${simpleReady} and ${simpleReminder}.
+      You can take your coffee out at * ${simpleOver} *.
+      You should make coffee at * ${simpleMake} *.`;
+      session.send(currentTimeValues);
+    };
 
     //Changes the settings reminder, brew, and remove times for coffee
     function modifySetTimes(){
-      
       session.send('Still under work!');
+      // switch()
     }
-    
+
     //Does a 30 second check to make sure that we get the time.
     const timeIntervalCheck = 30 * 1000;
     setInterval(()=>{checkTime()},timeIntervalCheck);

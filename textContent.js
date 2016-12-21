@@ -1,3 +1,4 @@
+'use strict';
 const emojis = {
 	coffee: `(coffee)`,
 	computer: `(computer)`,
@@ -26,7 +27,7 @@ const randomCoffeeFact = [
 ];
 
 const greetingList = [
-	`Hey, how're you doing? I'm Coffeebot! ${emojis.coffee}`,
+	`Hey, how're you doing today? I'm Coffeebot! ${emojis.coffee}`,
 	`Nice to meet you! I'm Coffee Coffeebot! ${emojis.coffee}`,
 	`Hello! I'm Coffeebot! ${emojis.coffee}`,
 ];
@@ -44,14 +45,16 @@ const BOT_PHRASES = {
 	confused: confusedList,
 	generalHelp: `How can I help you? ${emojis.holdon}`,
 	greeting: greetingList,
+	inProgress: `This command is currently in process, please try again later!`,
 	makeCoffeePhrase: `It's time to make coffee! Get your grinders and beans lads!`,
 	menuPhrase: `Coffee commands that are available anytime:\n
-	* help - Displays a list of commands.
-	* goodbye - End this conversation.
-	* greeting - I greet you.
-	* menu - Displays this current menu.
-	* random fact - Displays a random coffee fact.`,
-	onAdded: `Hello %s... Thanks for adding me. Say 'Coffee Me' to see some great demos.`,
+	${emojis.coffee} help - Shows a list of commands.
+	${emojis.coffee} goodbye - End this conversation.
+	${emojis.coffee} greeting - I greet you.
+	${emojis.coffee} menu - Shows current menu.
+	${emojis.coffee} timings - Shows when you will get your reminders.
+	${emojis.coffee} random fact - Shows a random coffee fact.`,
+	onAdded: `Hello %s... Thanks for adding me. Say menu or help to access a list of commands-coffee.`,
 	reminderPhrase: `Have you guys made coffee yet? If not, make it now!`,
 };
 
