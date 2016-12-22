@@ -8,6 +8,7 @@ const addressUser = require('./textContent.js').addressUser;
 const utils = require('./utils.js');
 const giphyURL = `http://api.giphy.com/v1/gifs/random?api_key=${giphyKey}&tag=coffee`;
 
+//Main Body
 function getGiphy(session){
 
 	request(giphyURL).then((response)=>{

@@ -1,13 +1,13 @@
 'use strict';
 //Node Modules
-const restify = require('restify');
 const builder = require('botbuilder');
 const moment = require('moment');
+const restify = require('restify');
 
 //My Modules and Settings
+const randomFact = require('./textContent.js').randomCoffeeFact;
 const settings = require('./settings.js');
 const textContent = require('./textContent.js').botPhrases;
-const randomFact = require('./textContent.js').randomCoffeeFact;
 const utils = require('./utils.js');
 
 //=========================================================
@@ -81,11 +81,16 @@ bot.dialog('/menu', [
 
 //Rest of the command logic
 bot.dialog('/', function (session) {
-  
+    
+    let currentTimeStamp = moment().format('M/D/YY HH:mm')
+
+    console.log(currentTimeStamp, session.message.user.name, session.message.text);
     if(textLookup('greeting') || textLookup('hi') || textLookup('hello'))
       session.send(utils.randomPhraser(textContent.greeting));
     else if(textLookup('coffee me'))
       coffeedMe(session);
+    else if(textLookup('info'))
+      session.send(textContent.botInfo);
     else if(textLookup('random') && textLookup('fact'))
       session.send(utils.randomPhraser(randomFact));
     else if (textLookup('how') && textLookup('long'))
@@ -94,6 +99,8 @@ bot.dialog('/', function (session) {
       session.send(modifySetTimes());
     else if(textLookup('timings'))
       displayTimings();
+    else if(textLookup('test'))
+      utils.checkTime(session);
     else
       session.send(utils.randomPhraser(textContent.confused));
 
@@ -113,6 +120,7 @@ bot.dialog('/', function (session) {
       giphyer(session);
     }
 
+    //General reminder of when coffee time is
     function displayTimings(){
       let simpleReady = utils.momentFormatter(settings.brewReadyTime);
       let simpleOver = utils.momentFormatter(settings.brewOverTime);
@@ -132,26 +140,9 @@ bot.dialog('/', function (session) {
       // switch()
     }
 
-    //Does a 30 second check to make sure that we get the time.
-    const timeIntervalCheck = 30 * 1000;
-    setInterval(()=>{checkTime()},timeIntervalCheck);
-
-    function checkTime(){
-      let currentMoment = moment().format('HH:mm');
-
-      switch (currentMoment){
-        case settings.brewReadyTime:
-          session.send(textContent.brewReadyPhrase);
-          break;
-        case settings.brewOverTime:
-          session.send(textContent.brewOverPhrase);
-          break;
-        case settings.reminderTime:
-          session.send(textContent.makeCoffeePhrase);
-          break;
-        case settings.makeTime:
-          session.send(textContent.reminderPhrase);
-          break;
-      }
-    }
+    //Does a check every minute to make sure that we get the time.
+    const timeIntervalCheck = 60 * 1000;
+    // setInterval(()=>{utils.checkTime(session},timeIntervalCheck);
 });
+
+

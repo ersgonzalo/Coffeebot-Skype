@@ -1,8 +1,11 @@
 'use strict';
 const emojis = {
+	bow: `(bow)`,
 	coffee: `(coffee)`,
 	computer: `(computer)`,
+	confused: `:^)`,
 	holdon: `(holdon)`,
+	wave: `(wave)`,
 }
 
 const addressUser = [
@@ -12,16 +15,24 @@ const addressUser = [
 ]
 
 const confusedList = [
-	`Sorry I don't understand you...`,
-	`Try a different command instead, I don't know this one.`,
-	`:^)`
+	`Sorry, I don't understand that phrase yet...`,
+	`Try a something else instead, I don't know this one. ${emojis.bow}`,
+	emojis.confused,
 ];
 
 const greetingList = [
 	`Hey, how're you doing today? I'm Coffeebot! ${emojis.coffee}`,
 	`Nice to meet you! I'm Coffee Coffeebot! ${emojis.coffee}`,
 	`Hello! I'm Coffeebot! ${emojis.coffee}`,
+	`${emojis.coffee} ${emojis.wave} ${emojis.coffee}` ,
 ];
+
+const botInfo = `
+	Coffeebot was made by Eric Gonzalo.
+	For use in the Cold Brew Crew Skype chat.
+
+	You can view the source code @ https://github.com/ersgonzalo/Coffeebot-Skype
+	`;
 
 const randomCoffeeFact = [
 	`You don’t need coffee when you first wake up. \nYour body naturally produces a hormone called cortisol that helps you feel alert and awake. That is released according to your circadian rhythm, dictated by the time of the day. So, if you have a habit of drinking coffee when you first wake up, you may want to wait a bit longer so that your caffeine isn’t wasted during a time when cortisol is at its highest.`,
@@ -45,30 +56,33 @@ const randomCoffeeFact = [
 ];
 
 const botPhrases = {
+	botInfo: botInfo,
 	brewReadyPhrase: `Looks like the coffee should be ready now, did you guys remove it from the fridge?`,
 	brewOverPhrase: `We're going into overtime! You okay with the coffee tasting a bit darker?`,
+	makeCoffeePhrase: `It's time to make coffee! Get your grinders and beans lads!`,
+	reminderPhrase: `Have you guys made coffee yet? If not, make it now!`,
 	coffeeMeStart: `How would you like coffee-related assistance? Your options are: \n 1. Next coffee. \n 2. Dead`,
 	confused: confusedList,
 	generalHelp: `How can I help you? ${emojis.holdon}`,
 	greeting: greetingList,
 	inProgress: `This command is currently in process, please try again later!`,
-	makeCoffeePhrase: `It's time to make coffee! Get your grinders and beans lads!`,
 	menuPhrase: `Coffee commands that are available anytime:\n
 	${emojis.coffee} coffee me - Suprise!
 	${emojis.coffee} goodbye - End this conversation.
 	${emojis.coffee} greeting - I greet you.
-	${emojis.coffee} help - Shows a list of commands.
-	${emojis.coffee} menu - Shows current menu.
+	${emojis.coffee} help/menu - Shows a list of commands.
+	${emojis.coffee} info - Gives info behind this bot.
 	${emojis.coffee} timings - Shows when you will get your reminders.
 	${emojis.coffee} random fact - Shows a random coffee fact.`,
+	morning: `Good morning coffee drinkers!`,
+	evening: `Have a good night, see you in the morning for more coffee!`,
 	onAdded: `Hello %s... Thanks for adding me. Say menu or help to access a list of commands-coffee.`,
-	reminderPhrase: `Have you guys made coffee yet? If not, make it now!`,
 };
 
 module.exports = {
+	addressUser: addressUser,
 	botPhrases: botPhrases,
 	randomCoffeeFact: randomCoffeeFact,
-	addressUser, addressUser
 };
 
 
