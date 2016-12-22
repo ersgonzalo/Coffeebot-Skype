@@ -5,6 +5,24 @@ const emojis = {
 	holdon: `(holdon)`,
 }
 
+const addressUser = [
+`For you `,
+`Hey lookey `,
+`With love to `,
+]
+
+const confusedList = [
+	`Sorry I don't understand you...`,
+	`Try a different command instead, I don't know this one.`,
+	`:^)`
+];
+
+const greetingList = [
+	`Hey, how're you doing today? I'm Coffeebot! ${emojis.coffee}`,
+	`Nice to meet you! I'm Coffee Coffeebot! ${emojis.coffee}`,
+	`Hello! I'm Coffeebot! ${emojis.coffee}`,
+];
+
 const randomCoffeeFact = [
 	`You don’t need coffee when you first wake up. \nYour body naturally produces a hormone called cortisol that helps you feel alert and awake. That is released according to your circadian rhythm, dictated by the time of the day. So, if you have a habit of drinking coffee when you first wake up, you may want to wait a bit longer so that your caffeine isn’t wasted during a time when cortisol is at its highest.`,
 	`Coffee isn’t actually that dehydrating. \nGreat news! Caffeine was once thought to be a significant diuretic, but that’s actually not true. Unless it’s consumed in large quantities (more than 500 to 600 mg a day, or two coffees) there aren’t such negative effects. In fact, studies have shown that urine output isn’t significantly changed when a person drinks a caffeinated beverage, rather than something non-caffeinated like water. So, as long as you enjoy your coffee in moderation, there’s not much to worry about.`, 
@@ -26,19 +44,7 @@ const randomCoffeeFact = [
 	`Sourced from here: http://distractify.com/old-school/2015/05/27/reasons-why-you-should-be-drinking-coffee-right-now-1197926615`
 ];
 
-const greetingList = [
-	`Hey, how're you doing today? I'm Coffeebot! ${emojis.coffee}`,
-	`Nice to meet you! I'm Coffee Coffeebot! ${emojis.coffee}`,
-	`Hello! I'm Coffeebot! ${emojis.coffee}`,
-];
-
-const confusedList = [
-	`Sorry I don't understand you...`,
-	`Try a different command instead, I don't know this one.`,
-	`:^)`
-];
-
-const BOT_PHRASES = {
+const botPhrases = {
 	brewReadyPhrase: `Looks like the coffee should be ready now, did you guys remove it from the fridge?`,
 	brewOverPhrase: `We're going into overtime! You okay with the coffee tasting a bit darker?`,
 	coffeeMeStart: `How would you like coffee-related assistance? Your options are: \n 1. Next coffee. \n 2. Dead`,
@@ -48,9 +54,10 @@ const BOT_PHRASES = {
 	inProgress: `This command is currently in process, please try again later!`,
 	makeCoffeePhrase: `It's time to make coffee! Get your grinders and beans lads!`,
 	menuPhrase: `Coffee commands that are available anytime:\n
-	${emojis.coffee} help - Shows a list of commands.
+	${emojis.coffee} coffee me - Suprise!
 	${emojis.coffee} goodbye - End this conversation.
 	${emojis.coffee} greeting - I greet you.
+	${emojis.coffee} help - Shows a list of commands.
 	${emojis.coffee} menu - Shows current menu.
 	${emojis.coffee} timings - Shows when you will get your reminders.
 	${emojis.coffee} random fact - Shows a random coffee fact.`,
@@ -59,8 +66,9 @@ const BOT_PHRASES = {
 };
 
 module.exports = {
-	BOT_PHRASES: BOT_PHRASES,
-	randomCoffeeFact: randomCoffeeFact
+	botPhrases: botPhrases,
+	randomCoffeeFact: randomCoffeeFact,
+	addressUser, addressUser
 };
 
 

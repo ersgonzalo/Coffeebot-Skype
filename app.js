@@ -6,7 +6,7 @@ const moment = require('moment');
 
 //My Modules and Settings
 const settings = require('./settings.js');
-const textContent = require('./textContent.js').BOT_PHRASES;
+const textContent = require('./textContent.js').botPhrases;
 const randomFact = require('./textContent.js').randomCoffeeFact;
 const utils = require('./utils.js');
 
@@ -85,8 +85,7 @@ bot.dialog('/', function (session) {
     if(textLookup('greeting') || textLookup('hi') || textLookup('hello'))
       session.send(utils.randomPhraser(textContent.greeting));
     else if(textLookup('coffee me'))
-      session.send(textContent.inProgress);
-      // coffeedMe();
+      coffeedMe(session);
     else if(textLookup('random') && textLookup('fact'))
       session.send(utils.randomPhraser(randomFact));
     else if (textLookup('how') && textLookup('long'))
@@ -109,9 +108,9 @@ bot.dialog('/', function (session) {
       session.send(textContent.inProgress);
     }
 
-    function coffeedMe(){
+    function coffeedMe(session){
       let giphyer = require('./giphyer.js');
-      giphyer();
+      giphyer(session);
     }
 
     function displayTimings(){
@@ -122,8 +121,8 @@ bot.dialog('/', function (session) {
 
       let currentTimeValues = `
       Your reminders are at ${simpleReady} and ${simpleReminder}.
-      You can take your coffee out at * ${simpleOver} *.
-      You should make coffee at * ${simpleMake} *.`;
+      You can take your coffee out at ${simpleOver}.
+      You should make coffee at ${simpleMake}.`;
       session.send(currentTimeValues);
     };
 
@@ -155,6 +154,4 @@ bot.dialog('/', function (session) {
           break;
       }
     }
-
-    
 });
