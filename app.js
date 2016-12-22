@@ -142,7 +142,7 @@ bot.dialog('/', function (session) {
 
     //Does a check every minute to make sure that we get the time.
     const timeIntervalCheck = 60 * 1000;
-    // setInterval(()=>{utils.checkTime(session},timeIntervalCheck);
+    setInterval(()=>{utils.checkTime(session);},timeIntervalCheck);
 });
 
 
