@@ -8,6 +8,7 @@ const restify = require('restify');
 const randomFact = require('./textContent.js').randomCoffeeFact;
 const settings = require('./settings.js');
 const textContent = require('./textContent.js').botPhrases;
+const eightBall = require('./textContent.js').magicEightBall;
 const utils = require('./utils.js');
 
 //=========================================================
@@ -16,14 +17,14 @@ const utils = require('./utils.js');
 
 // Setup Restify Server
 let server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 8080, ()=>{
-   console.log('%s listening to %s', server.name, server.url);
+server.listen(process.env.port || process.env.PORT || 8080, () => {
+  console.log('%s listening to %s', server.name, server.url);
 });
 
 // Create chat bot
 let connector = new builder.ChatConnector({
-    appId: settings.appId,
-    appPassword: settings.appPassword
+  appId: settings.appId,
+  appPassword: settings.appPassword
 });
 
 
@@ -31,25 +32,25 @@ let bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
 //Bot on
-bot.on('contactRelationUpdate', (message)=>{
-    if (message.action === 'add') {
-        let name = message.user ? message.user.name : null;
-        let reply = new builder.Message()
-                .address(message.address)
-                .text(textContent.onAdded, name || 'there');
-        bot.send(reply);
-    } else {
-        // delete their data
-    }
+bot.on('contactRelationUpdate', (message) => {
+  if (message.action === 'add') {
+    let name = message.user ? message.user.name : null;
+    let reply = new builder.Message()
+      .address(message.address)
+      .text(textContent.onAdded, name || 'there');
+    bot.send(reply);
+  } else {
+    // delete their data
+  }
 });
 
-bot.on('typing', (message)=>{
+bot.on('typing', (message) => {
   // User is typing
   message.send(`I see you're typing something, is it cold brew related?`);
 });
 
-bot.on('deleteUserData', (message)=>{
-    // User asked to delete their data
+bot.on('deleteUserData', (message) => {
+  // User asked to delete their data
 });
 
 //=========================================================
@@ -63,86 +64,91 @@ bot.beginDialogAction('menu', '/menu', { matches: /^menu/i });
 // Bots Dialogs
 //=========================================================
 
-String.prototype.contains = function(content){
+String.prototype.contains = function(content) {
   return this.indexOf(content) !== -1;
 }
 
-function displayMenuText(session){
-   session.endDialog(textContent.menuPhrase);
+function displayMenuText(session) {
+  session.endDialog(textContent.menuPhrase);
 }
 
 bot.dialog('/help', [
-    (session)=>{displayMenuText(session);}
+  (session) => { displayMenuText(session); }
 ]);
 
 bot.dialog('/menu', [
-    (session)=>{displayMenuText(session);}
+  (session) => { displayMenuText(session); }
 ]);
 
 //Rest of the command logic
-bot.dialog('/', function (session) {
-    
-    let currentTimeStamp = moment().format('M/D/YY HH:mm')
+bot.dialog('/', function(session) {
 
-    console.log(currentTimeStamp, session.message.user.name, session.message.text);
-    if(textLookup('greeting') || textLookup('hi') || textLookup('hello'))
-      session.send(utils.randomPhraser(textContent.greeting));
-    else if(textLookup('coffee me'))
-      coffeedMe(session);
-    else if(textLookup('info'))
-      session.send(textContent.botInfo);
-    else if(textLookup('random') && textLookup('fact'))
-      session.send(utils.randomPhraser(randomFact));
-    else if (textLookup('how') && textLookup('long'))
-      session.send(calculateTimeToCoffee());
-    else if (textLookup('change') && textLookup('times'))
-      session.send(modifySetTimes());
-    else if(textLookup('timings'))
-      displayTimings();
-    else if(textLookup('test'))
-      utils.checkTime(session);
-    else
-      session.send(utils.randomPhraser(textContent.confused));
+  let currentTimeStamp = moment().format('M/D/YY HH:mm');
 
-    //Extrapolated the text lookup because we have lots of keywords
-    function textLookup(text){
-      return session.message.text.toLowerCase().contains(text);
-    };
+  console.log(currentTimeStamp, session.message.user.name, session.message.text);
+  if (textLookup('magic coffee ball, ') && textLookup('?'))
+    session.send(utils.randomPhraser(eightBall));
+  else if (textLookup('Do I want coffee?'))
+    utils.wantCoffee(session);
+  else if (textLookup('reset') && textLookup('boolean'))
+    utils.resetBrewBooleans(session);
+  else if (textLookup('coffee me'))
+    coffeedMe(session);
+  else if (textLookup('random') && textLookup('fact'))
+    session.send(utils.randomPhraser(randomFact));
+  else if (textLookup('how') && textLookup('long'))
+    session.send(calculateTimeToCoffee());
+  else if (textLookup('change') && textLookup('times'))
+    session.send(modifySetTimes());
+  else if (textLookup('greeting') || textLookup('hi') || textLookup('hello'))
+    session.send(utils.randomPhraser(textContent.greeting));
+  else if (textLookup('timings'))
+    displayTimings();
+  else if (textLookup('info'))
+    session.send(textContent.botInfo);
+  else if (textLookup('test'))
+    utils.checkTime(session);
+  else
+    session.send(utils.randomPhraser(textContent.confused));
 
-    //Uses moment to let user know how far away they are from the cold brew moments.
-    function calculateTimeToCoffee(){
-      // let timeCalculated = moment().toNow();
-      session.send(textContent.inProgress);
-    }
+  //Extrapolated the text lookup because we have lots of keywords
+  function textLookup(text) {
+    text = text.toLowerCase();
+    return session.message.text.toLowerCase().contains(text);
+  };
 
-    function coffeedMe(session){
-      let giphyer = require('./giphyer.js');
-      giphyer(session);
-    }
+  //Uses moment to let user know how far away they are from the cold brew moments.
+  function calculateTimeToCoffee() {
+    // let timeCalculated = moment().toNow();
+    session.send(textContent.inProgress);
+  }
 
-    //General reminder of when coffee time is
-    function displayTimings(){
-      let simpleReady = utils.momentFormatter(settings.brewReadyTime);
-      let simpleOver = utils.momentFormatter(settings.brewOverTime);
-      let simpleReminder = utils.momentFormatter(settings.reminderTime);
-      let simpleMake = utils.momentFormatter(settings.makeTime);
+  function coffeedMe(session) {
+    let giphyer = require('./giphyer.js');
+    giphyer(session);
+  }
 
-      let currentTimeValues = `
+  //General reminder of when coffee time is
+  function displayTimings() {
+    let simpleReady = utils.momentFormatter(settings.brewReadyTime);
+    let simpleOver = utils.momentFormatter(settings.brewOverTime);
+    let simpleReminder = utils.momentFormatter(settings.reminderTime);
+    let simpleMake = utils.momentFormatter(settings.makeTime);
+
+    let currentTimeValues = `
       Your reminders are at ${simpleReady} and ${simpleReminder}.
       You can take your coffee out at ${simpleOver}.
       You should make coffee at ${simpleMake}.`;
-      session.send(currentTimeValues);
-    };
+    session.send(currentTimeValues);
+  };
 
-    //Changes the settings reminder, brew, and remove times for coffee
-    function modifySetTimes(){
-      session.send('Still under work!');
-      // switch()
-    }
+  //Changes the settings reminder, brew, and remove times for coffee
+  function modifySetTimes() {
+    session.send('Still under work!');
+    // switch()
+  }
 
-    //Does a check every minute to make sure that we get the time.
-    const timeIntervalCheck = 60 * 1000;
-    setInterval(()=>{utils.checkTime(session);},timeIntervalCheck);
+  //Does a check every minute to make sure that we get the time.
+  const timeIntervalCheck = 60 * 1000;
+  setInterval(()=>{utils.checkTime(session);},timeIntervalCheck);
 });
-
-

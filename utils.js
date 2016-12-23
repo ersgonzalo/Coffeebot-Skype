@@ -6,56 +6,73 @@ const moment = require('moment');
 const settings = require('./settings.js');
 const textContent = require('./textContent.js').botPhrases;
 
-function checkTime(session){
-	let currentDayOfWeek = moment().format('d');
-	let isNotWeekend = currentDayOfWeek != '6' || currentDayOfWeek != '0';
-	if(isNotWeekend){
-	  let currentMoment = moment().format('HH:mm');
-	  //TODO: Eventually break this up and randomize the minute greeting
-		let morningGreet = '09:00';
-  	let eveningGreet = '02:16';
+function checkTime(session) {
+  let currentDayOfWeek = moment().format('d');
+  let isNotWeekend = currentDayOfWeek != '6' || currentDayOfWeek != '0';
+  if (isNotWeekend) {
+    let currentMoment = moment().format('HH:mm');
+    //TODO: Eventually break this up and randomize the minute greeting
+    let morningGreetTime = '09:00';
+    let eveningGreetTime = '19:00';
 
-	  switch (currentMoment){
-	    case settings.brewReadyTime:
-	      session.send(textContent.brewReadyPhrase);
-	      break;
-	    case settings.brewOverTime:
-	      session.send(textContent.brewOverPhrase);
-	      break;
-	    case settings.reminderTime:
-	      session.send(textContent.makeCoffeePhrase);
-	      break;
-	    case settings.makeTime:
-	      session.send(textContent.reminderPhrase);
-	      break;
-	    case morningGreet:
-	    	session.send(textContent.morning);
-	    	break;
-	    case eveningGreet:
-	    	session.send(textContent.evening);
-	    	break;
-	  }
-	}
+    if (currentMoment == settings.brewReadyTime && !settings.isBrewReady) {
+      session.send(textContent.brewReadyPhrase);
+      settings.isBrewReady = true;
+    } else if (currentMoment == settings.brewOverTime && !settings.isBrewOver) {
+      session.send(textContent.brewOverPhrase);
+      settings.isBrewOver = true;
+    } else if (currentMoment == settings.makeTime && !settings.isMakeOver) {
+      session.send(textContent.makeCoffeePhrase);
+    } else if (currentMoment == settings.reminderTime && !settings.isReminder) {
+      session.send(textContent.reminderPhrase);
+    } else if (currentMoment == morningGreetTime && !settings.hasGreetedMorning) {
+      session.send(textContent.morning);
+      settings.hasGreetedMorning = true;
+    } else if (currentMoment == eveningGreetTime && !settings.hasGreetedEvening) {
+      session.send(textContent.evening);
+      settings.hasGreetedEvening = true;
+    }
+  }
 };
 
-function chooseNamePart(userName){
-	userName = userName.split(' ');
-	let nameChosen = userName[parseInt(Math.random() * userName.length)];
-	return nameChosen;
+function chooseNamePart(userName) {
+  userName = userName.split(' ');
+  let nameChosen = userName[parseInt(Math.random() * userName.length)];
+  return nameChosen;
 };
 
-function momentFormatter(momentTimeString){
-	return moment(momentTimeString, 'H:mm a').format('h:mm a');
+function momentFormatter(momentTimeString) {
+  return moment(momentTimeString, 'H:mm a').format('h:mm a');
 };
 
-function randomPhraser(phraseArray){
-	let randomIndex = parseInt(Math.random() * phraseArray.length);
+function randomPhraser(phraseArray) {
+  let randomIndex = parseInt(Math.random() * phraseArray.length);
   return phraseArray[randomIndex];
 };
 
+function resetBrewBooleans(session){
+	settings.isBrewReady = false;
+  settings.isBrewOver = false;
+  settings.isMakeOver = false;
+  settings.isReminder = false;
+  settings.hasGreetedMorning = false;
+  settings.hasGreetedEvening = false;
+  // session.send(`It's a new day! Hey hey! \n-King JJ`);
+}
+
+function wantCoffee(session){
+	let currentMoment = moment();
+	if(currentMoment < moment().set('hour', 15))
+		session.send(textContent.yesWantCoffee);
+	else
+		session.send(textContent.noWantCoffee);
+}
+
 module.exports = {
-	checkTime: checkTime,
-	chooseNamePart: chooseNamePart,
-	momentFormatter: momentFormatter,
-	randomPhraser: randomPhraser,
+  checkTime,
+  chooseNamePart,
+  momentFormatter,
+  randomPhraser,
+  resetBrewBooleans,
+  wantCoffee,
 };
