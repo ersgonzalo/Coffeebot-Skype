@@ -25,7 +25,7 @@ const botInfo = `
 const confusedList = [
   `Sorry, I don't understand that phrase yet...`,
   `Try a something else instead, I don't know this one. ${emojis.bow}`,
-  `¯\\_(ツ)_/¯`,
+  String.raw`¯\\\_(ツ)\_/¯`,
   emojis.confused,
 ];
 

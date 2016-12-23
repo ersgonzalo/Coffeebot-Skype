@@ -14,6 +14,7 @@ function checkTime(session) {
     //TODO: Eventually break this up and randomize the minute greeting
     let morningGreetTime = '09:00';
     let eveningGreetTime = '19:00';
+    const resetTime = '00:00';
 
     if (currentMoment == settings.brewReadyTime && !settings.isBrewReady) {
       session.send(textContent.brewReadyPhrase);
@@ -31,7 +32,8 @@ function checkTime(session) {
     } else if (currentMoment == eveningGreetTime && !settings.hasGreetedEvening) {
       session.send(textContent.evening);
       settings.hasGreetedEvening = true;
-    }
+    } else if (currentMoment == resetTime)
+      resetBrewBooleans();
   }
 };
 
@@ -60,6 +62,14 @@ function resetBrewBooleans(session){
   // session.send(`It's a new day! Hey hey! \n-King JJ`);
 }
 
+function debugBrewBooleans(session){
+  let tempSettings = Object.assign({}, settings);
+  delete tempSettings.appId;
+  delete tempSettings.appPassword;
+  delete tempSettings.giphyKey;
+  session.send(JSON.stringify(tempSettings, null, 2));
+}
+
 function wantCoffee(session){
 	let currentMoment = moment();
 	if(currentMoment < moment().set('hour', 15))
@@ -71,6 +81,7 @@ function wantCoffee(session){
 module.exports = {
   checkTime,
   chooseNamePart,
+  debugBrewBooleans,
   momentFormatter,
   randomPhraser,
   resetBrewBooleans,

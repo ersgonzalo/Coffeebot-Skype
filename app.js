@@ -51,6 +51,10 @@ bot.on('typing', (message) => {
 
 bot.on('deleteUserData', (message) => {
   // User asked to delete their data
+  let reply = new builder.Message()
+      .address(message.address)
+      .text('Resetting bot data, give me a second...');
+  bot.send(reply);
 });
 
 //=========================================================
@@ -106,8 +110,11 @@ bot.dialog('/', function(session) {
     displayTimings();
   else if (textLookup('info'))
     session.send(textContent.botInfo);
-  else if (textLookup('test'))
+  else if (textLookup('test')){
     utils.checkTime(session);
+    session.send('Debugging here.');
+    utils.debugBrewBooleans(session);
+  }
   else
     session.send(utils.randomPhraser(textContent.confused));
 
