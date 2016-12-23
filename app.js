@@ -90,7 +90,7 @@ bot.dialog('/', function(session) {
   let currentTimeStamp = moment().format('M/D/YY HH:mm');
 
   console.log(currentTimeStamp, session.message.user.name, session.message.text);
-  if (textLookup('magic coffee ball, ') && textLookup('?'))
+  if (textLookup('magic coffee cup, ') && textLookup('?'))
     session.send(utils.randomPhraser(eightBall));
   else if (textLookup('Do I want coffee?'))
     utils.wantCoffee(session);

@@ -101,7 +101,7 @@ const botPhrases = {
 	${emojis.coffee} greeting - I greet you.
 	${emojis.coffee} help/menu - Shows a list of commands.
 	${emojis.coffee} info - Gives info behind this bot.
-	${emojis.coffee} magic coffee ball, (Your question)? - Emulates a magic 8 ball.
+	${emojis.coffee} magic coffee cup, (Your question)? - Emulates a magic 8 ball.
 	${emojis.coffee} timings - Shows when you will get your reminders.
 	${emojis.coffee} random fact - Shows a random coffee fact.`,
   morning: `Good morning coffee drinkers!`,
