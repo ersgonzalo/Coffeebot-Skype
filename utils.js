@@ -24,8 +24,10 @@ function checkTime(session) {
       settings.isBrewOver = true;
     } else if (currentMoment == settings.makeTime && !settings.isMakeOver) {
       session.send(textContent.makeCoffeePhrase);
+	  settings.isMakeOver = true;
     } else if (currentMoment == settings.reminderTime && !settings.isReminder) {
       session.send(textContent.reminderPhrase);
+	  settings.isReminder = true;
     } else if (currentMoment == morningGreetTime && !settings.hasGreetedMorning) {
       session.send(textContent.morning);
       settings.hasGreetedMorning = true;
