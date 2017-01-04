@@ -6,6 +6,28 @@ const moment = require('moment');
 const settings = require('./settings.js');
 const textContent = require('./textContent.js').botPhrases;
 
+function calculateBrewTime(session){
+	let timeFromCurrentBrew = moment().add(settings.brewingTime, settings.brewingTimeShort);
+	let timeString = timeFromCurrentBrew.format('HH:mm');
+
+	settings.brewReadyTime = timeString;
+	session.send(textContent.brewStartPhrase + timeString);
+};
+
+function changeBrewTime(session){
+	let desiredBrewingTime = session.message;
+	let coffeeRegex = new RegExp('brew change (\\d*)');
+	let getBrewingTime = coffeeRegex.match(session.message)[1];
+	getBrewingTime = parseInt(getBrewingTime);
+
+	if(Number.isInteger(getBrewingTime))
+		//change brewing time
+	else
+		//show an error
+
+	session.send(`Your brew time has been changed to be removed after ` + + ` hours.`);
+}
+
 function checkTime(session) {
   let currentDayOfWeek = moment().format('d');
   let isNotWeekend = currentDayOfWeek != '6' || currentDayOfWeek != '0';
@@ -24,10 +46,10 @@ function checkTime(session) {
       settings.isBrewOver = true;
     } else if (currentMoment == settings.makeTime && !settings.isMakeOver) {
       session.send(textContent.makeCoffeePhrase);
-	  settings.isMakeOver = true;
+	    settings.isMakeOver = true;
     } else if (currentMoment == settings.reminderTime && !settings.isReminder) {
       session.send(textContent.reminderPhrase);
-	  settings.isReminder = true;
+	    settings.isReminder = true;
     } else if (currentMoment == morningGreetTime && !settings.hasGreetedMorning) {
       session.send(textContent.morning);
       settings.hasGreetedMorning = true;
@@ -45,6 +67,11 @@ function chooseNamePart(userName) {
   return nameChosen;
 };
 
+//Changes the settings reminder, brew, and remove times for coffee
+function modifySetTimes() {
+  session.send('Still under work!');
+  // switch()
+}
 function momentFormatter(momentTimeString) {
   return moment(momentTimeString, 'H:mm a').format('h:mm a');
 };
@@ -81,9 +108,12 @@ function wantCoffee(session){
 }
 
 module.exports = {
+	calculateBrewTime,
+	changeBrewTime,
   checkTime,
   chooseNamePart,
   debugBrewBooleans,
+  modifySetTimes,
   momentFormatter,
   randomPhraser,
   resetBrewBooleans,

@@ -104,6 +104,10 @@ bot.dialog('/', function(session) {
     session.send(calculateTimeToCoffee());
   else if (textLookup('change') && textLookup('times'))
     session.send(modifySetTimes());
+  else if (textLookup('brew start'))
+    utils.calculateBrewTime(session);
+  else if (textLookup('brew time change'))
+    utils.changeBrewTime(session);
   else if (textLookup('greeting') || textLookup('hi') || textLookup('hello'))
     session.send(utils.randomPhraser(textContent.greeting));
   else if (textLookup('timings'))
@@ -130,6 +134,7 @@ bot.dialog('/', function(session) {
     session.send(textContent.inProgress);
   }
 
+  //Uses giphy api to get a random gif associated with coffee for a user
   function coffeedMe(session) {
     let giphyer = require('./giphyer.js');
     giphyer(session);
@@ -157,5 +162,5 @@ bot.dialog('/', function(session) {
 
   //Does a check every minute to make sure that we get the time.
   const timeIntervalCheck = 60 * 1000;
-  setInterval(()=>{utils.checkTime(session);},timeIntervalCheck);
+  // setInterval(()=>{utils.checkTime(session);},timeIntervalCheck);
 });

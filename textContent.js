@@ -108,7 +108,8 @@ const botPhrases = {
   evening: `Have a good night, see you in the morning for more coffee!`,
   onAdded: `Hello %s... Thanks for adding me. Say menu or help to access a list of commands-coffee.`,
   yesWantCoffee: `Yes, you do want some, get some now or wait for the cold brew to finish!`,
-  noWantCoffee: `No, probably not. Caffeine might affect you if you drink more now.`,
+  noWantCoffee: `No, probably not. The caffeine might affect you if you drink more now. Half life and stuff.`,
+  brewStartPhrase: `Timer has started, you can take your coffee out at `,
 };
 
 module.exports = {

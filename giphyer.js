@@ -15,7 +15,8 @@ function getGiphy(session) {
     let giphyBody = JSON.parse(response);
     giphyBody = giphyBody.data.image_url;
 
-    session.send(utils.randomPhraser(addressUser) + utils.chooseNamePart(session.message.user.name) + ':');
+    let usersName = session.message.user.name;
+    session.send(utils.randomPhraser(addressUser) + utils.chooseNamePart(usersName) + ':');
     session.send(giphyBody);
   });
 };
