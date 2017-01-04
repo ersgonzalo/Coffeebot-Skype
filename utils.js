@@ -20,12 +20,15 @@ function changeBrewTime(session){
 	let getBrewingTime = coffeeRegex.match(session.message)[1];
 	getBrewingTime = parseInt(getBrewingTime);
 
-	if(Number.isInteger(getBrewingTime))
+	if(Number.isInteger(getBrewingTime)){
 		//change brewing time
-	else
-		//show an error
+    settings.brewingTime = getBrewingTime;
+    session.send(`Your brew time has been changed to be removed after ` + getBrewingTime + ` hours.`);  
+  }else{
+    //show an error
+    session.send(`Please enter a number after the 'brew change' command!`);
+  }
 
-	session.send(`Your brew time has been changed to be removed after ` + + ` hours.`);
 }
 
 function checkTime(session) {
