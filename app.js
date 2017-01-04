@@ -154,12 +154,6 @@ bot.dialog('/', function(session) {
     session.send(currentTimeValues);
   };
 
-  //Changes the settings reminder, brew, and remove times for coffee
-  function modifySetTimes() {
-    session.send('Still under work!');
-    // switch()
-  }
-
   //Does a check every minute to make sure that we get the time.
   const timeIntervalCheck = 60 * 1000;
   // setInterval(()=>{utils.checkTime(session);},timeIntervalCheck);

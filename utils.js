@@ -6,6 +6,7 @@ const moment = require('moment');
 const settings = require('./settings.js');
 const textContent = require('./textContent.js').botPhrases;
 
+//Calculates when you should take out your cold brew in the next day
 function calculateBrewTime(session){
 	let timeFromCurrentBrew = moment().add(settings.brewingTime, settings.brewingTimeShort);
 	let timeString = timeFromCurrentBrew.format('HH:mm');
@@ -14,6 +15,7 @@ function calculateBrewTime(session){
 	session.send(textContent.brewStartPhrase + timeString);
 };
 
+//Allows you to change the default setting for how long your cold brew should stew for
 function changeBrewTime(session){
 	let desiredBrewingTime = session.message;
 	let coffeeRegex = new RegExp('brew change (\\d*)');
