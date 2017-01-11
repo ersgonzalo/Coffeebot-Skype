@@ -95,7 +95,7 @@ bot.dialog('/', function(session) {
   else if (textLookup('Do I want coffee?'))
     utils.wantCoffee(session);
   else if (textLookup('reset') && textLookup('boolean'))
-    utils.resetBrewBooleans(session);
+    utils.resetBrewleans(session);
   else if (textLookup('coffee me'))
     coffeedMe(session);
   else if (textLookup('random') && textLookup('fact'))
@@ -117,7 +117,7 @@ bot.dialog('/', function(session) {
   else if (textLookup('test')){
     utils.checkTime(session);
     session.send('Debugging here.');
-    utils.debugBrewBooleans(session);
+    utils.debugBrewleans(session);
   }
   else
     session.send(utils.randomPhraser(textContent.confused));
@@ -156,5 +156,5 @@ bot.dialog('/', function(session) {
 
   //Does a check every minute to make sure that we get the time.
   const timeIntervalCheck = 60 * 1000;
-  // setInterval(()=>{utils.checkTime(session);},timeIntervalCheck);
+  setInterval(()=>{utils.checkTime(session);},timeIntervalCheck);
 });

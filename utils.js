@@ -5,6 +5,7 @@ const moment = require('moment');
 //My Modules and Settings
 const settings = require('./settings.js');
 const textContent = require('./textContent.js').botPhrases;
+// import 
 
 //Calculates when you should take out your cold brew in the next day
 function calculateBrewTime(session){
@@ -17,9 +18,10 @@ function calculateBrewTime(session){
 
 //Allows you to change the default setting for how long your cold brew should stew for
 function changeBrewTime(session){
-	let desiredBrewingTime = session.message;
-	let coffeeRegex = new RegExp('brew change (\\d*)');
-	let getBrewingTime = coffeeRegex.match(session.message)[1];
+	let desiredBrewingTime = session.message.text;
+  console.log(desiredBrewingTime);
+	let coffeeRegex = new RegExp('brew time change (\\d*)');
+	let getBrewingTime = desiredBrewingTime.match(coffeeRegex)[1];
 	getBrewingTime = parseInt(getBrewingTime);
 
 	if(Number.isInteger(getBrewingTime)){
@@ -62,7 +64,7 @@ function checkTime(session) {
       session.send(textContent.evening);
       settings.hasGreetedEvening = true;
     } else if (currentMoment == resetTime)
-      resetBrewBooleans();
+      resetBrewleans();
   }
 };
 
@@ -86,17 +88,23 @@ function randomPhraser(phraseArray) {
   return phraseArray[randomIndex];
 };
 
-function resetBrewBooleans(session){
-	settings.isBrewReady = false;
+function resetBrewleans(){
+  settings.isBrewReady = false;
   settings.isBrewOver = false;
   settings.isMakeOver = false;
   settings.isReminder = false;
   settings.hasGreetedMorning = false;
   settings.hasGreetedEvening = false;
-  // session.send(`It's a new day! Hey hey! \n-King JJ`);
+  console.log(`It's a new day! Hey hey! \n-King JJ`);
 }
 
-function debugBrewBooleans(session){
+function resetFully(session){
+  resetBrewleans();
+  brewingTime = 18;
+  brewingTimeShort = 'h';
+}
+
+function debugBrewleans(session){
   let tempSettings = Object.assign({}, settings);
   delete tempSettings.appId;
   delete tempSettings.appPassword;
@@ -117,10 +125,10 @@ module.exports = {
 	changeBrewTime,
   checkTime,
   chooseNamePart,
-  debugBrewBooleans,
+  debugBrewleans,
   modifySetTimes,
   momentFormatter,
   randomPhraser,
-  resetBrewBooleans,
+  resetBrewleans,
   wantCoffee,
 };
