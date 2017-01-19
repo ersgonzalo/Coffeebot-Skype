@@ -76,13 +76,8 @@ function displayMenuText(session) {
   session.endDialog(textContent.menuPhrase);
 }
 
-bot.dialog('/help', [
-  (session) => { displayMenuText(session); }
-]);
-
-bot.dialog('/menu', [
-  (session) => { displayMenuText(session); }
-]);
+bot.dialog('/help', [(session) => { displayMenuText(session); }]);
+bot.dialog('/menu', [(session) => { displayMenuText(session); }]);
 
 //Rest of the command logic
 bot.dialog('/', function(session) {
@@ -112,6 +107,8 @@ bot.dialog('/', function(session) {
     session.send(utils.randomPhraser(textContent.greeting));
   else if (textLookup('timings'))
     displayTimings();
+  else if (textLookup('brew reset fully'))
+    utils.resetFully(session);
   else if (textLookup('info'))
     session.send(textContent.botInfo);
   else if (textLookup('test')){

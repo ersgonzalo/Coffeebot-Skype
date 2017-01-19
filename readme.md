@@ -38,5 +38,6 @@ Setup
 
 	```
 3. `node app`
-4. Make sure you have your bot setup on the botframework site.
-5. Add your bot on Skype or test it on the Botframework web chat!
+4. `ngrok http 8080` to create a tunnel to test your bot locally
+5. Make sure you have your bot setup on the botframework site.
+6. Add your bot on Skype or test it on the Botframework web chat!

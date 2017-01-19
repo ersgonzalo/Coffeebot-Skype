@@ -5,7 +5,6 @@ const moment = require('moment');
 //My Modules and Settings
 const settings = require('./settings.js');
 const textContent = require('./textContent.js').botPhrases;
-// import 
 
 //Calculates when you should take out your cold brew in the next day
 function calculateBrewTime(session){
@@ -13,13 +12,17 @@ function calculateBrewTime(session){
 	let timeString = timeFromCurrentBrew.format('HH:mm');
 
 	settings.brewReadyTime = timeString;
-	session.send(textContent.brewStartPhrase + timeString);
+  if(settings.hasSetbrewTime === false){
+	 session.send(textContent.brewStartPhrase + timeString);
+   settings.hasSetbrewTime = true;
+  }else{
+    //Question user if they really want to reset time then change the timing
+  }
 };
 
 //Allows you to change the default setting for how long your cold brew should stew for
 function changeBrewTime(session){
 	let desiredBrewingTime = session.message.text;
-  console.log(desiredBrewingTime);
 	let coffeeRegex = new RegExp('brew time change (\\d*)');
 	let getBrewingTime = desiredBrewingTime.match(coffeeRegex)[1];
 	getBrewingTime = parseInt(getBrewingTime);
@@ -51,6 +54,10 @@ function checkTime(session) {
     } else if (currentMoment == settings.brewOverTime && !settings.isBrewOver) {
       session.send(textContent.brewOverPhrase);
       settings.isBrewOver = true;
+      if(settings.hasSetbrewTime === true){
+        settings.brewReadyTime = '10:30';
+        settings.hasSetBrewTime = false;
+      }
     } else if (currentMoment == settings.makeTime && !settings.isMakeOver) {
       session.send(textContent.makeCoffeePhrase);
 	    settings.isMakeOver = true;
@@ -98,10 +105,24 @@ function resetBrewleans(){
   console.log(`It's a new day! Hey hey! \n-King JJ`);
 }
 
+function resetBrewTiming(){
+  settings.brewingTime = 18;
+  settings.brewingTimeShort = 'h';
+}
+
+function resetTimings(){
+  settings.brewReadyTime = '10:30';
+  settings.brewOverTime = '11:00';
+  settings.reminderTime = '16:30';
+  settings.makeTime = '17:00';
+  console.log(`It's JJ Style! \n-King JJ`);
+}
+
 function resetFully(session){
   resetBrewleans();
-  brewingTime = 18;
-  brewingTimeShort = 'h';
+  resetBrewTiming();
+  resetTimings();  
+  session.send(`Your timings and settings have all been reset.`);
 }
 
 function debugBrewleans(session){
@@ -130,5 +151,6 @@ module.exports = {
   momentFormatter,
   randomPhraser,
   resetBrewleans,
+  resetFully,
   wantCoffee,
 };
